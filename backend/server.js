@@ -4,6 +4,7 @@ const cors=require('cors');
 const session=require('express-session');
 const cookieParser=require('cookie-parser');
 const bodyParser=require('body-parser');
+const qr = require("qrcode");
 
 const app= express();
 app.use(cors({
@@ -15,7 +16,13 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
 app.use(session({
+    name: 'its session cookoi',
     secret: 'secret',
     resave: false,
     saveUninitialized:false,
@@ -48,7 +55,7 @@ app.post('/signup',(req,res)=>{
         return res.json(data);
      })
 })
-app.post('/login',(req,res)=>{
+app.post('/',(req,res)=>{
     const sql ="SELECT * FROM login WHERE `email` = ? AND `password`=? ";
 
     db.query(sql,[req.body.email,req.body.password],(err,data)=>{
@@ -63,13 +70,15 @@ app.post('/login',(req,res)=>{
     }
     })
 })
-app.get('/',(res,req) => {
+app.post('/home',(res,req) => {
     if(req.session.name){
         return res.json({ valid: true , name:req.session.name})
     }else{
         return res.json({valid:false})
     }
 })
+
+
 app.listen(8081,()=>{
     console.log("server is listening");
 })

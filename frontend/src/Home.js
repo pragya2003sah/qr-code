@@ -1,28 +1,43 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState, useLayoutEffect  } from 'react'
 import axios from 'axios'
+import QRCode from 'qrcode'
 import {useNavigate } from 'react-router-dom'
+import './Home.css'
 
 function Home() {
-    const[username,setName]=useState('');
-    const navigate=useNavigate();
-    axios.defaults.withCredentials = true;
-    useEffect(()=>{
-       axios.get('http://localhost:8081')
-       .then(res => {
-          if(res.data.valid){
-          console.log("its valid");
-          setName(res.data.name);
-        }else{
-            navigate('/login')
-        }
-       })
-       .catch(err=> console.log(err));
+  const [url, setUrl] = useState('')
+	const [qr, setQr] = useState('')
 
-    });
+	const GenerateQRCode = () => {
+		QRCode.toDataURL(url, (err, url) => {
+			if (err) return console.error(err)
+
+			console.log(url)
+			setQr(url)
+		})}
+	useLayoutEffect(() => {
+		
+			document.body.style.backgroundColor = "#335383FF";
+			
+
+	   });
+		
+	
   return (
-    <div>
-     <h1> welcome back {username}</h1>
-    </div>
+   
+    <div className="app">
+			<h1>QR Generator</h1>
+			<input 
+				type="text"
+				placeholder="enter unique id"
+				value={url}
+				onChange={e => setUrl(e.target.value)} />
+			<button onClick={GenerateQRCode}>Generate</button>
+			{qr && <>
+				<img src={qr} />
+				<a href={qr} download="qrcode.png">Download</a>
+			</>}
+		</div>
   )
 }
 

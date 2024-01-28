@@ -20,7 +20,7 @@ function Signup() {
         setErrors(validation(values));
         if(errors.name ==="" && errors.email ==="" && errors.password===""){
          axios.post('http://localhost:8081/signup',values)
-         .then(res =>  navigate('/login') )
+         .then(res =>  navigate('/') )
          .catch(err =>console.log(err))
         }
     }
@@ -45,9 +45,9 @@ function Signup() {
                 {errors.password && <span className='text-danger'>{errors.password}</span>}
             </div>
             
-                <button type='submit' className= 'btn-btn-success w-100'>Sign Up</button>
+                <button type='submit' className= 'btn btn-default border w-100 bg-light rounded-0 tect-decoration-none'>Sign Up</button>
                 <p>you already have a account</p>
-                <Link to="/login"className='btn btn-default border w-100 bg-light rounded-0 tect-decoration-none'>Log In</Link>
+                <Link to="/"className='btn btn-default border w-100 bg-light rounded-0 tect-decoration-none'>Log In</Link>
            
         </form>
     </div>

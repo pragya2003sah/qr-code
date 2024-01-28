@@ -19,9 +19,9 @@ function Login(){
     axios.get('http://localhost:8081')
     .then(res => {
      if(res.data.valid){
-       navigate('/');
+       navigate('/home');
      }else{
-         navigate('/login');
+         navigate('/');
      }
     })
     .catch(err=> console.log(err))
@@ -30,10 +30,10 @@ function Login(){
         event.preventDefault();
         setErrors(validation(values));
         if(errors.email ==="" && errors.password===""){
-            axios.post('http://localhost:8081/login',values)
+            axios.post('http://localhost:8081/',values)
             .then(res => {
                if(res.data.login){
-                navigate('/');
+                navigate('/home');
                }else{
                  alert("invalid credentials");
                }
@@ -58,7 +58,7 @@ function Login(){
                         {errors.password && <span className='text-danger'>{errors.password}</span>}
                     </div>
                     
-                        <button type='submit' className= 'btn-btn-success w-100'>Log in</button>
+                        <button type='submit' className= 'btn btn-default border w-100 bg-light rounded-0 tect-decoration-none'>Log in</button>
                         <p>you have agreed to our terms and conditions</p>
                         <Link to="/signup"className='btn btn-default border w-100 bg-light rounded-0 tect-decoration-none'>create Account</Link>
                    
